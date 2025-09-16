@@ -4,6 +4,7 @@ namespace TheRewind.Models;
 
 public class MovieContext : DbContext
 {
+    // first migrated, but Db for Album model
     public DbSet<Movie> Movies { get; set; }
 
     public DbSet<User> Users { get; set; }

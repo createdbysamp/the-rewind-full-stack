@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.EntityFrameworkCore;
 using TheRewind.Models;
 using TheRewind.ViewModels;
 
@@ -29,12 +30,9 @@ public class MoviesController : Controller
         }
 
         // METHOD
-        var vm = new MoviesIndexViewModel
-        {
-            Movies = _context
-                .Movies.Select(m => new MovieRowViewModel { Id = m.Id, Title = m.Title })
-                .ToList(),
-        };
+        var allMovies = _context.Movies.Include(m => m.User).ToList();
+
+        var vm = new MoviesIndexViewModel { AllMovies = allMovies };
         return View(vm);
     }
 
@@ -56,6 +54,7 @@ public class MoviesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult CreateNewMovie(MovieViewModel viewModel)
     {
+        var userId = HttpContext.Session.GetInt32(SessionUserId);
         // PROTECTION
         if (HttpContext.Session.GetInt32(SessionUserId) is null)
         {
@@ -75,6 +74,7 @@ public class MoviesController : Controller
             Description = viewModel.Description,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
+            UserId = (int)userId,
         };
 
         _context.Movies.Add(movie);

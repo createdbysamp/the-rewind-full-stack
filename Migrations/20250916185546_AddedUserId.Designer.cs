@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheRewind.Models;
 
@@ -11,9 +12,11 @@ using TheRewind.Models;
 namespace TheRewind.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    partial class MovieContextModelSnapshot : ModelSnapshot
+    [Migration("20250916185546_AddedUserId")]
+    partial class AddedUserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

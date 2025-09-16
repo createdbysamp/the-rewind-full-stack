@@ -4,7 +4,7 @@
 @{
 
   ViewData["Title"] = "Movies Homepage";
-  var movies = Model.Movies;
+  var movies = Model.AllMovies;
   var totalCount = Model.TotalCount;
 }
 
@@ -38,7 +38,7 @@ else
         <tr>
           <td>@movie.Title</td>
           @* <td>@movie.Rating.AvgRating</td> *@
-          @* <td>@movie.User.UserName</td> *@
+          <td>@movie.User.UserName</td>
           <td><a href="@movie.Id">view</a> <a href="@movie.Id/edit">edit</a> <a href="@movie.Id/delete">delete</a></td>
         </tr>
       }

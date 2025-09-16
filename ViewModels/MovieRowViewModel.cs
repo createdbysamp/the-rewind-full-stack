@@ -6,6 +6,7 @@ public class MovieRowViewModel
     public string Title { get; set; } = "";
 
     // string for username
+    public string AuthorUsername { get; set; } = string.Empty;
 
     // public authorization for average rating
 }

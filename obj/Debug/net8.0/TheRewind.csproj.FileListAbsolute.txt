@@ -109,3 +109,4 @@
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/TheRewind.genruntimeconfig.cache
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/ref/TheRewind.dll
 /Users/peezyg/Desktop/full-stack/TheRewind/bin/Debug/net8.0/BCrypt.Net-Next.dll
+/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/TheRewind.sourcelink.json

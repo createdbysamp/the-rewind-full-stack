@@ -24,4 +24,11 @@ public class Movie
 
     public DateTime CreatedAt = DateTime.UtcNow;
     public DateTime UpdatedAt = DateTime.UtcNow;
+
+    // --- ONE TO MANY RELATIONSHIP PROPERTIES --- //
+
+    // FOREIGN KEY FOR THE USER WHO CREATED POST
+    // navigation property for the user
+    public int UserId { get; set; }
+    public User? User { get; set; }
 }

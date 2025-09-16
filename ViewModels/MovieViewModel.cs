@@ -23,5 +23,9 @@ public class MovieViewModel
     [MinLength(10, ErrorMessage = "Description must be at least ten characters.")]
     public string Description { get; set; } = string.Empty;
 
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
     // tie in for user - public authorization
+    public string AuthorUsername { get; set; } = string.Empty;
 }
