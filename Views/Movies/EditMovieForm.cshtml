@@ -1,0 +1,35 @@
+@model MovieViewModel
+
+@{
+  ViewData["Title"] = "Edit Movie";
+}
+
+<h1>Edit Movie</h1>
+
+<form asp-controller="Movies" asp-action="UpdateMovie" method="post">
+  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+  <input type="hidden" asp-for="Id" />
+
+  <div class="mb-3">
+    <label class="form-label" asp-for="Title"></label>
+    <input class="form-control" asp-for="Title">
+    <span class="form-text text-danger" asp-validation-for="Title"></span>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" asp-for="Genre"></label>
+    <input class="form-control" asp-for="Genre">
+    <span class="form-text text-danger" asp-validation-for="Genre"></span>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" asp-for="ReleaseDate"></label>
+    <input class="form-control" asp-for="ReleaseDate">
+    <span class="form-text text-danger" asp-validation-for="ReleaseDate"></span>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" asp-for="Description"></label>
+    <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+    <span class="form-text text-danger" asp-validation-for="Description"></span>
+  </div>
+  <a href="/movies" class="btn btn-outline-primary">Cancel / Back to list</a>
+  <button type="submit" class="btn btn-primary">Edit Movie</button>
+</form>

@@ -1,0 +1,17 @@
+@using TheRewind.ViewModels
+
+@model MovieViewModel
+@{
+  ViewData["Title"] = "Confirm Delete?!";
+  var movie = Model;
+}
+
+<h1>Are you sure you want to delete @movie.Title?</h1>
+
+<form asp-controller="Movies" asp-action="DeleteMovie" asp-route-id="@movie.Id" method="post">
+  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+  <input type="hidden" asp-for="Id" />
+
+  <a href="/movies" class="btn btn-outline-danger">Cancel / Back to list</a>
+  <button type="submit" class="btn btn-danger">Delete Movie!</button>
+</form>

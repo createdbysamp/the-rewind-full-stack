@@ -1,0 +1,43 @@
+@model RegisterFormViewModel
+
+@{
+
+  ViewData["Title"] = "New Registration";
+  
+}
+
+
+<h1 class="display-2">Register</h1>
+<div class="card shadow">
+    <div class="card-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-controller="Account" asp-action="ProcessRegisterForm" method="post">
+            <div class="mb-3">
+                <label asp-for="UserName" class="form-label">Username:</label>
+                <input asp-for="UserName" class="form-control" />
+                <span class="form-text text-danger" asp-validation-for="UserName"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email:</label>
+                <input asp-for="Email" class="form-control" />
+                <span class="form-text text-danger" asp-validation-for="Email"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password:</label>
+                <input asp-for="Password" class="form-control" />
+                <span class="form-text text-danger" asp-validation-for="Password"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label">Confirm Password:</label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span class="form-text text-danger" asp-validation-for="ConfirmPassword"></span>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Sign Up!</button>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-center">
+        <p class="mb-0 text-muted">Already registered? <a href="/account/login">Log in here.</a></p>
+    </div>
+</div>

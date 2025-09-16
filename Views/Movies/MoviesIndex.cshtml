@@ -1,0 +1,47 @@
+@using Microsoft.AspNetCore.OutputCaching
+@model MoviesIndexViewModel
+
+@{
+
+  ViewData["Title"] = "Movies Homepage";
+  var movies = Model.Movies;
+  var totalCount = Model.TotalCount;
+}
+
+
+<h1>All Movies Home Page!</h1>
+
+<div class="text-end">
+  <a href="/new" class="btn btn-primary">Add a Movie</a>
+</div>
+
+@if (totalCount == 0)
+{
+  <p>No movies in the database yet.</p>
+}
+else
+{
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Avg Rating</th>
+        <th>Uploaded By</th>
+        <th>Actions</th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var movie in movies)
+      {
+        <tr>
+          <td>@movie.Title</td>
+          @* <td>@movie.Rating.AvgRating</td> *@
+          @* <td>@movie.User.UserName</td> *@
+          <td><a href="@movie.Id">view</a> <a href="@movie.Id/edit">edit</a> <a href="@movie.Id/delete">delete</a></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
