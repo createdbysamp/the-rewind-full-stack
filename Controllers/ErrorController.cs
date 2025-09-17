@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
+namespace TheRewind.Controllers;
+
 public class ErrorController : Controller
 {
     // [Route("Error/404")]
@@ -11,6 +13,7 @@ public class ErrorController : Controller
     {
         if (code == 404)
         {
+            Console.WriteLine("----------- if you're reading this, you're reached 404 --------//");
             // Serve a custom view for 404 errors
             return View("PageNotFound");
         }

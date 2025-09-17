@@ -32,6 +32,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/error/500");
     app.UseStatusCodePagesWithReExecute("/error/{0}");
+    app.UseHsts();
 }
 app.UseHttpsRedirection();
 

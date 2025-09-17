@@ -96,6 +96,7 @@ public class AccountController : Controller
     public IActionResult LoginForm(string? error)
     {
         // SUMMON LOGIN FORM VIEWMODEL
+        Console.WriteLine("------------- // ayyy hit login!!");
         var loginFormViewModel = new LoginFormViewModel { Error = error };
         return View(loginFormViewModel);
     }
