@@ -39,7 +39,12 @@ else
           <td>@movie.Title</td>
           <td>@movie.AvgRating</td>
           <td>@movie.AuthorUsername</td>
-          <td><a href="@movie.Id">view</a> <a href="@movie.Id/edit">edit</a> <a href="@movie.Id/delete">delete</a></td>
+          <td><a href="@movie.Id">view</a> 
+          @if (Context.Session.GetInt32("userId") is not null)
+          {
+          <a href="@movie.Id/edit">edit</a> <a href="@movie.Id/delete">delete</a>
+          }
+          </td>
         </tr>
       }
     </tbody>
