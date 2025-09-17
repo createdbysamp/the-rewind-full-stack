@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TheRewind.Models;
 using TheRewind.Services;
@@ -31,7 +33,7 @@ public class AccountController : Controller
     // --- REGISTER POST ACTION --- //
     [HttpPost("register")]
     [ValidateAntiForgeryToken]
-    public IActionResult ProcessRegisterForm(RegisterFormViewModel vm)
+    public async Task<IActionResult> ProcessRegisterForm(RegisterFormViewModel vm)
     {
         // 1. Normalize so validation runs on clean values
         vm.UserName = (vm.UserName ?? "").Trim().ToLowerInvariant();
@@ -47,7 +49,9 @@ public class AccountController : Controller
         }
 
         // 3. Is the username unique?
-        bool userAlreadyExists = _context.Users.Any((user) => user.UserName == vm.UserName);
+        bool userAlreadyExists = await _context.Users.AnyAsync(
+            (user) => user.UserName == vm.UserName
+        );
         if (userAlreadyExists)
         {
             // Manually add a model error that will display in the view.
@@ -56,7 +60,7 @@ public class AccountController : Controller
             return View("RegisterForm", vm);
         }
         // 3. Is the email unique?
-        bool emailAlreadyExists = _context.Users.Any((user) => user.Email == vm.Email);
+        bool emailAlreadyExists = await _context.Users.AnyAsync((user) => user.Email == vm.Email);
         if (emailAlreadyExists)
         {
             // Manually add a model error that will display in the view.
@@ -78,7 +82,7 @@ public class AccountController : Controller
 
         // UPDATE DB
         _context.Users.Add(newUser);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         // 6. Store the user’s ID in session (acts as login).
         HttpContext.Session.SetInt32(SessionUserId, newUser.Id);
@@ -99,7 +103,7 @@ public class AccountController : Controller
     // --- LOGIN POST ACTION --- //
     [HttpPost("login")]
     [ValidateAntiForgeryToken]
-    public IActionResult ProcessLoginForm(LoginFormViewModel vm)
+    public async Task<IActionResult> ProcessLoginForm(LoginFormViewModel vm)
     {
         // 1. Normalize the email and password for validation
         vm.Email = (vm.Email ?? "").Trim().ToLowerInvariant();
@@ -114,7 +118,7 @@ public class AccountController : Controller
 
         // 3. Find the user in the database
         // Hint: Use LINQ's SingleOrDefault() to find a user by their email.
-        var userExists = _context.Users.SingleOrDefault((user) => user.Email == vm.Email);
+        var userExists = await _context.Users.SingleOrDefaultAsync((user) => user.Email == vm.Email);
         // The return value will be null if no user is found.
         if (userExists is null)
             return RedirectToAction("LoginForm", new { error = "invalid-credentials" });
@@ -157,7 +161,7 @@ public class AccountController : Controller
 
     // --- PROTECTED PROFILE --- //
     [HttpGet("profile")]
-    public IActionResult Profile()
+    public async Task<IActionResult> Profile()
     {
         // PROTECTION
         if (HttpContext.Session.GetInt32(SessionUserId) is null)
@@ -167,7 +171,7 @@ public class AccountController : Controller
 
         // use userId to get their email
         int userId = (int)HttpContext.Session.GetInt32(SessionUserId);
-        var user = _context.Users.SingleOrDefault(u => u.Id == userId);
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == userId);
 
         // pass the user's email to the view
         ViewBag.UserEmail = user.Email;
