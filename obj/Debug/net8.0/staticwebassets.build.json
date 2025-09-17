@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "qNo9IedARRr6PiBbblbRGvLFbOwGsf71uDe9c2qXGFI=",
+  "Hash": "RjVmXdRGxSYOneFaiBWg/iPgmNCxP0F7hW9OY9uq6c8=",
   "Source": "TheRewind",
   "BasePath": "_content/TheRewind",
   "Mode": "Default",
@@ -16,44 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/bundle/TheRewind.styles.css",
-      "SourceId": "TheRewind",
-      "SourceType": "Computed",
-      "ContentRoot": "/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/bundle/",
-      "BasePath": "_content/TheRewind",
-      "RelativePath": "TheRewind.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/bundle/TheRewind.styles.css"
-    },
-    {
-      "Identity": "/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/projectbundle/TheRewind.bundle.scp.css",
-      "SourceId": "TheRewind",
-      "SourceType": "Computed",
-      "ContentRoot": "/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/projectbundle/",
-      "BasePath": "_content/TheRewind",
-      "RelativePath": "TheRewind.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/projectbundle/TheRewind.bundle.scp.css"
-    },
     {
       "Identity": "/Users/peezyg/Desktop/full-stack/TheRewind/wwwroot/css/site.css",
       "SourceId": "TheRewind",

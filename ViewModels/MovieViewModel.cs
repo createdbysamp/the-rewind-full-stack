@@ -33,4 +33,7 @@ public class MovieViewModel
     public int RatingCount { get; set; }
     public bool RatedByMe { get; set; }
     public double AvgRating { get; set; }
+
+    // tie in for userId
+    public int UserId { get; set; }
 }

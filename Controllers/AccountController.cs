@@ -9,7 +9,7 @@ using TheRewind.ViewModels;
 
 namespace TheRewind.Controllers;
 
-[Route("account/")]
+[Route("account")]
 public class AccountController : Controller
 {
     private readonly MovieContext _context;

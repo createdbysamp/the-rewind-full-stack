@@ -3,7 +3,11 @@ using TheRewind.Models;
 using TheRewind.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
+
+// var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
+var dbPassword = builder.Configuration["DbPassword"];
+var connectionString =
+    $"Server=localhost;port=3306;userid=root;password={dbPassword};database=the_rewind_movies_db;";
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

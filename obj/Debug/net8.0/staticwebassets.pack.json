@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/projectbundle/TheRewind.bundle.scp.css",
-      "PackagePath": "staticwebassets/TheRewind.bundle.scp.css"
-    },
-    {
       "Id": "/Users/peezyg/Desktop/full-stack/TheRewind/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },

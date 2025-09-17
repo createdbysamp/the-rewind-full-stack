@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("001a6490-85e8-40e3-bca9-7f9df22ae646")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("TheRewind")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+61d7f4392291f82d622d23220f9803ae5b61c4d9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97558e2cb669652d9332844babd025aa726d2d6a")]
 [assembly: System.Reflection.AssemblyProductAttribute("TheRewind")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TheRewind")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

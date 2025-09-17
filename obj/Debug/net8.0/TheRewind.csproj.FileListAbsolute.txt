@@ -99,9 +99,7 @@
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.TheRewind.props
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.TheRewind.props
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/staticwebassets.pack.json
-/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/bundle/TheRewind.styles.css
-/Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/scopedcss/projectbundle/TheRewind.bundle.scp.css
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/TheRewind.csproj.Up2Date
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/TheRewind.dll
 /Users/peezyg/Desktop/full-stack/TheRewind/obj/Debug/net8.0/refint/TheRewind.dll

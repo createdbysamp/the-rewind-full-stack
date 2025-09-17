@@ -7,6 +7,7 @@ using TheRewind.ViewModels;
 
 namespace TheRewind.Controllers;
 
+[Route("movies")]
 public class MoviesController : Controller
 {
     private readonly MovieContext _context;
@@ -18,9 +19,8 @@ public class MoviesController : Controller
     }
 
     // general routing
-    [Route("/movies")]
     // ----- MOVIES index action method ----- //
-    [HttpGet("/all")]
+    [HttpGet("all")]
     public async Task<IActionResult> MoviesIndex()
     {
         var userId = HttpContext.Session.GetInt32(SessionUserId);
@@ -57,6 +57,7 @@ public class MoviesController : Controller
                 AvgRating = movie.Ratings.Any()
                     ? Math.Round(movie.Ratings.Average(r => r.RatingValue), 1)
                     : 0,
+                UserId = movie.User.Id,
             })
             .ToList();
 
@@ -65,7 +66,7 @@ public class MoviesController : Controller
     }
 
     // ----- NEW MOVIES ACTION ----- //
-    [HttpGet("/new")]
+    [HttpGet("new")]
     public IActionResult NewMovieForm()
     {
         // PROTECTION
@@ -78,7 +79,7 @@ public class MoviesController : Controller
     }
 
     // --- NEW MOVIE POST --- //
-    [HttpPost("/create")]
+    [HttpPost("create")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateNewMovie(MovieViewModel viewModel)
     {
@@ -137,7 +138,7 @@ public class MoviesController : Controller
     }
 
     // ---- EDIT FORM GET ---- //
-    [HttpGet("/{id}/edit")]
+    [HttpGet("{id}/edit")]
     public async Task<IActionResult> EditMovieForm(int id)
     {
         var currentUserId = HttpContext.Session.GetInt32(SessionUserId);
@@ -215,7 +216,7 @@ public class MoviesController : Controller
     }
 
     // ---- GET DELETE CONFIRMATION ACTION ---- //
-    [HttpGet("/{id}/delete")]
+    [HttpGet("{id}/delete")]
     public async Task<IActionResult> ConfirmDelete(int id)
     {
         var currentUserId = HttpContext.Session.GetInt32(SessionUserId);
@@ -250,7 +251,7 @@ public class MoviesController : Controller
     }
 
     // --- POST DELETE ACTION --- //
-    [HttpPost("/{id}/delete")]
+    [HttpPost("{id}/delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteMovie(int id, MovieViewModel vm)
     {

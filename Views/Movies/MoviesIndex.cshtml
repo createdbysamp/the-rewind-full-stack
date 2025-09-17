@@ -40,7 +40,7 @@ else
           <td>@movie.AvgRating</td>
           <td>@movie.AuthorUsername</td>
           <td><a href="@movie.Id">view</a> 
-          @if (Context.Session.GetInt32("userId") is not null)
+          @if (Context.Session.GetInt32("userId") == movie.UserId)
           {
           <a href="@movie.Id/edit">edit</a> <a href="@movie.Id/delete">delete</a>
           }
