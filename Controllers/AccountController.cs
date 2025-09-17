@@ -118,7 +118,9 @@ public class AccountController : Controller
 
         // 3. Find the user in the database
         // Hint: Use LINQ's SingleOrDefault() to find a user by their email.
-        var userExists = await _context.Users.SingleOrDefaultAsync((user) => user.Email == vm.Email);
+        var userExists = await _context.Users.SingleOrDefaultAsync(
+            (user) => user.Email == vm.Email
+        );
         // The return value will be null if no user is found.
         if (userExists is null)
             return RedirectToAction("LoginForm", new { error = "invalid-credentials" });
