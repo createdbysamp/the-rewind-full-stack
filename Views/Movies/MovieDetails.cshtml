@@ -1,30 +1,94 @@
-@model MovieViewModel
+@model Movie
+@*  updated model to movie instead of viewmodel *@
 
 @{
 
 
     ViewData["Title"] = "Movie Details";
     var movie = Model;
+
+    var currentUserId = Context.Session.GetInt32("userId");
+    Rating? userRating = null;
+    if (currentUserId.HasValue)
+    {
+        userRating = movie.Ratings.FirstOrDefault(r => r.UserId == currentUserId.Value);
+    }
+
 }
 
 <h1>Movie Details</h1>
-<div class="card">
-    <div class="card-body">
-        <h3 class="card-title">@movie.Title</h3>
-        <p class="card-text">
-            <strong>Genre:</strong> @movie.Genre</br>
-            <strong>Release Date:</strong> @movie.ReleaseDate</br>
-            @* <strong>Uploaded by:</strong> @movie.User.UserName *@
-            <br>
-            <strong>Description:</strong> @movie.Description
+<div class="container d-flex justify-content-between gap-3">
+    <div class="card col">
+        <div class="card-body">
+            <h3 class="card-title">@movie.Title</h3>
+            <p class="card-text">
+                <strong>Genre:</strong> @movie.Genre</br>
+                <strong>Release Date:</strong> @movie.ReleaseDate</br>
+                <strong>Uploaded by:</strong> @movie.User.UserName (@movie.CreatedAt.ToString("d"))
+                <br>
+                <strong>Description:</strong> @movie.Description
 
-        </p>
-        <p class="card-text">
-            <a href="/movies">Back to List</a>
-            |
-            <a href="@movie.Id/edit">Edit</a>
-            |
-            <a href="@movie.Id/delete">Delete</a>
-        </p>
+            </p>
+            <p class="card-text">
+                <a href="/movies">Back to List</a>
+                |
+                <a href="@movie.Id/edit">Edit</a>
+                |
+                <a href="@movie.Id/delete">Delete</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="card col mx-auto">
+        <div class="card-body">
+            <h3 class="card-title">STATS</h3>
+            <p class="card-text">
+                <strong>Ratings:</strong> @movie.Ratings.Count</br>
+                <strong>Average Rating:</strong>
+                @if (movie.Ratings.Any())
+                {
+                    @Math.Round(movie.Ratings.Average(r => r.RatingValue), 1)
+                }
+                else
+                {
+                    <span class="text-muted">No ratings yet</span>
+                }
+                </br>
+            <ul class="list-group">
+                <strong>Rated by:</strong>
+                @foreach (var rate in Model.Ratings)
+                {
+                    <li>@rate.User!.UserName</li>
+                }
+            </ul>
+            </p>
+            <p class="card-footer">
+                @if (userRating != null)
+                {
+                <h4>Your Rating:</h4>
+                <div class="alert alert-warning">
+                    <strong>You rated this movie: @userRating.RatingValue/5</strong>
+                </div>
+            }
+            else
+            {
+                <h4>Rate this movie:</h4>
+                <form asp-action="Rate" asp-controller="Movies" asp-route-id="@movie.Id" method="post">
+                    <div class="mb-3">
+                        <label for="ratingValue" class="form-label"></label>
+                        <select name="ratingValue" id="ratingValue" class="form-select" required>
+                            <option value="">Select a rating...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-danger">Rate</button>
+                </form>
+            }
+            </p>
+        </div>
     </div>
 </div>

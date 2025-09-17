@@ -12,6 +12,10 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    // ---- one to many relationship property ---- //
-    public List<Movie> Movies { get; set; } = new List<Movie>();
+    // ---- one to many relationship properties ---- //
+    public List<Movie> Movies { get; set; } = [];
+
+    // --- many to many relationship properties --- //
+    // many-to-many relationship with album through the rating table
+    public List<Rating> Ratings { get; set; } = [];
 }

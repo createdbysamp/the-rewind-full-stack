@@ -9,6 +9,8 @@ public class MovieContext : DbContext
 
     public DbSet<User> Users { get; set; }
 
+    public DbSet<Rating> Ratings { get; set; }
+
     // add DbSet for our like model
     // public DbSet<Rating> Ratings { get; set; }
 

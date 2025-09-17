@@ -28,4 +28,9 @@ public class MovieViewModel
 
     // tie in for user - public authorization
     public string AuthorUsername { get; set; } = string.Empty;
+
+    // tie in for ratings
+    public int RatingCount { get; set; }
+    public bool RatedByMe { get; set; }
+    public double AvgRating { get; set; }
 }

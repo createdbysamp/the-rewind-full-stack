@@ -84,7 +84,7 @@ public class AccountController : Controller
         HttpContext.Session.SetInt32(SessionUserId, newUser.Id);
 
         // 7. Redirect to the home page (or dashboard).
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("MoviesIndex", "Movies");
     }
 
     // --- LOGIN GET ACTION --- //

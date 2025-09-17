@@ -22,17 +22,43 @@ public class MoviesController : Controller
     [HttpGet("/all")]
     public IActionResult MoviesIndex()
     {
+        var userId = HttpContext.Session.GetInt32(SessionUserId);
         // UNPROTECTED HOME PAGE
         // PROTECTION ... added :(
-        if (HttpContext.Session.GetInt32(SessionUserId) is null)
+        if (userId is not int uid)
         {
             return RedirectToAction("LoginForm", "Account", new { error = "not-authenticated" });
         }
+        // get the current user ID for RatedByMe variable
 
-        // METHOD
-        var allMovies = _context.Movies.Include(m => m.User).ToList();
+        // Get movies from database
+        var movies = _context
+            .Movies.Include(m => m.User)
+            .Include(m => m.Ratings) // added ratings
+            // .ThenInclude(r => r.User) // added user for each rating
+            .ToList();
 
-        var vm = new MoviesIndexViewModel { AllMovies = allMovies };
+        // map movie to NEW MovieViewModel
+        var movieViewModels = movies
+            .Select(movie => new MovieViewModel
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Genre = movie.Genre,
+                ReleaseDate = movie.ReleaseDate,
+                Description = movie.Description,
+                CreatedAt = movie.CreatedAt,
+                UpdatedAt = movie.UpdatedAt,
+                AuthorUsername = movie.User?.UserName ?? "Unknown",
+                RatingCount = movie.Ratings.Count, // count ratings for this movie
+                RatedByMe = movie.Ratings.Any(r => r.UserId == uid), // true if userId has rated
+                AvgRating = movie.Ratings.Any()
+                    ? Math.Round(movie.Ratings.Average(r => r.RatingValue), 1)
+                    : 0,
+            })
+            .ToList();
+
+        var vm = new MoviesIndexViewModel { AllMovies = movieViewModels };
         return View(vm);
     }
 
@@ -79,7 +105,7 @@ public class MoviesController : Controller
 
         _context.Movies.Add(movie);
         _context.SaveChanges();
-        return RedirectToAction("MoviesIndex");
+        return RedirectToAction("MovieDetails", new { id = movie.Id });
     }
 
     // --- INDIVIDUAL MOVIE VIEW --- //
@@ -93,31 +119,27 @@ public class MoviesController : Controller
         }
 
         // METHOD
-        var movie = _context.Movies.FirstOrDefault(m => m.Id == id);
+        var movie = _context
+            .Movies.Include(m => m.User) // include user
+            .Include(m => m.Ratings) // include ratings
+            .ThenInclude(r => r.User)
+            .FirstOrDefault(m => m.Id == id);
 
         // if not found, return 404 error
         if (movie is null)
             return NotFound();
 
-        // map the entity to a viewModel
-
-        var vm = new MovieViewModel
-        {
-            Id = movie.Id,
-            Title = movie.Title,
-            Genre = movie.Genre,
-            ReleaseDate = movie.ReleaseDate,
-            Description = movie.Description,
-        };
-        return View(vm);
+        // skipp mapping the entity to a viewModel and instead return view of movie
+        return View(movie);
     }
 
     // ---- EDIT FORM GET ---- //
     [HttpGet("/{id}/edit")]
     public IActionResult EditMovieForm(int id)
     {
+        var currentUserId = HttpContext.Session.GetInt32(SessionUserId);
         // PROTECTION
-        if (HttpContext.Session.GetInt32(SessionUserId) is null)
+        if (currentUserId is null)
         {
             return RedirectToAction("LoginForm", "Account", new { error = "not-authenticated" });
         }
@@ -127,10 +149,10 @@ public class MoviesController : Controller
             return NotFound();
 
         // MAKE SURE USER IS WHO CREATED IT
-        // if (movie.UserId != SessionUserId)
-        // {
-        //     return Forbid();
-        // }
+        if (movie.UserId != currentUserId)
+        {
+            return Forbid();
+        }
 
         var vm = new MovieViewModel
         {
@@ -148,8 +170,9 @@ public class MoviesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult UpdateMovie(int id, MovieViewModel viewModel)
     {
+        var currentUserId = HttpContext.Session.GetInt32(SessionUserId);
         // PROTECTION
-        if (HttpContext.Session.GetInt32(SessionUserId) is null)
+        if (currentUserId is null)
         {
             return RedirectToAction("LoginForm", "Account", new { error = "not-authenticated" });
         }
@@ -169,6 +192,11 @@ public class MoviesController : Controller
         {
             return NotFound();
         }
+        // MAKE SURE USER IS WHO CREATED IT
+        if (movie.UserId != currentUserId)
+        {
+            return Forbid();
+        }
 
         movie.Title = viewModel.Title;
         movie.ReleaseDate = viewModel.ReleaseDate;
@@ -185,8 +213,9 @@ public class MoviesController : Controller
     [HttpGet("/{id}/delete")]
     public IActionResult ConfirmDelete(int id)
     {
+        var currentUserId = HttpContext.Session.GetInt32(SessionUserId);
         // PROTECTION
-        if (HttpContext.Session.GetInt32(SessionUserId) is null)
+        if (currentUserId is null)
         {
             return RedirectToAction("LoginForm", "Account", new { error = "not-authenticated" });
         }
@@ -197,10 +226,10 @@ public class MoviesController : Controller
             return NotFound();
 
         // MUST BE USER-WHO-CREATED
-        // if (movie.UserId != SessionUserId)
-        // {
-        //     return Forbid();
-        // }
+        if (movie.UserId != currentUserId)
+        {
+            return Forbid();
+        }
 
         // MAP TO NEW VIEWMODEL OF MOVIE
         var vm = new MovieViewModel
@@ -220,8 +249,9 @@ public class MoviesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult DeleteMovie(int id, MovieViewModel vm)
     {
+        var currentUserId = HttpContext.Session.GetInt32(SessionUserId);
         // PROTECTION
-        if (HttpContext.Session.GetInt32(SessionUserId) is null)
+        if (currentUserId is null)
         {
             return RedirectToAction("LoginForm", "Account", new { error = "not-authenticated" });
         }
@@ -243,6 +273,38 @@ public class MoviesController : Controller
 
         // REDIRECT TO HOME (REQUIRED BY WIREFRAME)
         return RedirectToAction("MoviesIndex");
+    }
+
+    // --- HTTP POST ACTION FOR RATING --- //
+    [HttpPost("{id}/rate")]
+    [ValidateAntiForgeryToken]
+    public IActionResult Rate(int id, int ratingValue)
+    {
+        var userId = HttpContext.Session.GetInt32(SessionUserId);
+        if (userId is not int uid)
+        {
+            return RedirectToAction("LoginForm", "Account", new { error = "not-authenticated" });
+        }
+
+        // Check if the user has already liked this post
+        var alreadyRated = _context.Ratings.FirstOrDefault(r => r.UserId == uid && r.MovieId == id);
+        if (alreadyRated != null)
+        {
+            alreadyRated.RatingValue = ratingValue;
+        }
+        else
+        {
+            var newRate = new Rating
+            {
+                UserId = uid,
+                MovieId = id,
+                RatingValue = ratingValue,
+            };
+            _context.Ratings.Add(newRate);
+        }
+        _context.SaveChanges();
+
+        return RedirectToAction("MovieDetails", new { id });
     }
 }
 

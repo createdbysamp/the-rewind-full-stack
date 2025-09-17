@@ -31,4 +31,7 @@ public class Movie
     // navigation property for the user
     public int UserId { get; set; }
     public User? User { get; set; }
+
+    // many-to-many relationship with user through the rating join table
+    public List<Rating> Ratings { get; set; } = [];
 }

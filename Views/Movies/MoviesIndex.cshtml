@@ -37,8 +37,8 @@ else
       {
         <tr>
           <td>@movie.Title</td>
-          @* <td>@movie.Rating.AvgRating</td> *@
-          <td>@movie.User.UserName</td>
+          <td>@movie.AvgRating</td>
+          <td>@movie.AuthorUsername</td>
           <td><a href="@movie.Id">view</a> <a href="@movie.Id/edit">edit</a> <a href="@movie.Id/delete">delete</a></td>
         </tr>
       }
