@@ -34,7 +34,8 @@ public class MoviesController : Controller
 
         // Get movies from database
         var movies = await _context
-            .Movies.Include(m => m.User)
+            .Movies.AsNoTracking()
+            .Include(m => m.User)
             .Include(m => m.Ratings) // added ratings
             // .ThenInclude(r => r.User) // added user for each rating
             .ToListAsync();
@@ -121,7 +122,8 @@ public class MoviesController : Controller
 
         // METHOD
         var movie = await _context
-            .Movies.Include(m => m.User) // include user
+            .Movies.AsNoTracking()
+            .Include(m => m.User) // include user
             .Include(m => m.Ratings) // include ratings
             .ThenInclude(r => r.User)
             .FirstOrDefaultAsync(m => m.Id == id);
@@ -145,7 +147,7 @@ public class MoviesController : Controller
             return RedirectToAction("LoginForm", "Account", new { error = "not-authenticated" });
         }
         // METHOD
-        var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await _context.Movies.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
         if (movie is null)
             return NotFound();
 
@@ -224,7 +226,7 @@ public class MoviesController : Controller
         }
 
         // METHOD
-        var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await _context.Movies.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
         if (movie is null)
             return NotFound();
 

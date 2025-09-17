@@ -53,8 +53,7 @@
                 {
                     <span class="text-muted">No ratings yet</span>
                 }
-                </br>
-            <ul class="list-group">
+            <ul class="list-group list-unstyled">
                 <strong>Rated by:</strong>
                 @foreach (var rate in Model.Ratings)
                 {
@@ -62,7 +61,7 @@
                 }
             </ul>
             </p>
-            <p class="card-footer">
+            <p class="card-body">
                 @if (userRating != null)
                 {
                 <h4>Your Rating:</h4>

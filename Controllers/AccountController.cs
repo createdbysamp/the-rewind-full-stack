@@ -158,7 +158,7 @@ public class AccountController : Controller
     {
         // LOGOUT ACTIONS
         HttpContext.Session.Clear(); // clears all session data for the current user
-        return RedirectToAction("MoviesIndex", "Movies", new { message = "logout-successful" });
+        return RedirectToAction("Index", "Home", new { message = "logout-successful" });
     }
 
     // --- PROTECTED PROFILE --- //
@@ -171,13 +171,22 @@ public class AccountController : Controller
             return RedirectToAction("LoginForm", new { error = "not-authenticated" });
         }
 
-        // use userId to get their email
         int userId = (int)HttpContext.Session.GetInt32(SessionUserId);
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == userId);
+        // use userId to get their email
+        var user = await _context
+            .Users.AsNoTracking()
+            // .Include(u => u.Movies)
+            // .Include(u => u.Ratings)
+            .SingleOrDefaultAsync(u => u.Id == userId);
 
         // pass the user's email to the view
         ViewBag.UserEmail = user.Email;
         ViewBag.UserName = user.UserName;
+
+        // count movies added by this user
+        // count movies rated by this user
+        ViewBag.MoviesAdded = await _context.Movies.CountAsync(m => m.UserId == userId);
+        ViewBag.MoviesRated = await _context.Movies.CountAsync(r => r.UserId == userId);
 
         return View();
     }
